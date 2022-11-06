@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Endpoints and structures
+
 let API_BASE = "https://cohost.org/api/v1"
 
 public enum CKEndpoint: String {
@@ -16,6 +18,8 @@ public enum CKEndpoint: String {
 public struct APIResponse: Codable {
     
 }
+
+// MARK: - GET
 
 @available(macOS 12.0, *)
 public func get(_ endpoint: CKEndpoint, parameters: [String: String]? = nil) async throws -> (Data, HTTPURLResponse) {
@@ -47,13 +51,13 @@ Parameters: \(String(describing: parameters))
 }
 
 @available(macOS 12.0, *)
-public func getModel<Model: Codable>(_ endpoint: CKEndpoint, parameters: [String: String]? = nil) async throws -> Model {
+public func get<Model: Codable>(_ endpoint: CKEndpoint, parameters: [String: String]? = nil) async throws -> Model {
     let (data, _) = try await get(endpoint, parameters: parameters)
     return try JSONDecoder().decode(Model.self, from: data)
 }
 
 @available(macOS 12.0, *)
 public func getSalt(for email: String) async throws -> String {
-    let salt: CKSalt = try await getModel(.salt, parameters: ["email": email])
+    let salt: CKSalt = try await get(.salt, parameters: ["email": email])
     return salt.salt
 }
