@@ -19,7 +19,7 @@ public struct CKUser {
         let salt: CKSalt = try await getSalt(for: email)
         let hash: String = try CryptoUtils.generateHash(password: password, salt: salt.decodedSalt!)
         
-        let (data, response) = try await post(.user, body: ["email": email, "clientHash": hash])
+        let (data, response) = try await post(.login, body: ["email": email, "clientHash": hash])
         
         var cookie: String?
         if let headerCookie = response.value(forHTTPHeaderField: "set-cookie"), let firstCookie = headerCookie.split(separator: ";").first {

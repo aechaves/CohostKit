@@ -10,11 +10,12 @@ import Foundation
 // MARK: - Endpoints and structures
 
 let HOST = "cohost.org"
-let API_BASE = "https://\(HOST)/api/v1"
+let API_PREFIX = "/api/v1"
+let API_BASE = "https://\(HOST)\(API_PREFIX)"
 
 public enum CKEndpoint: String {
     case salt = "/login/salt"
-    case user = "/login"
+    case login = "/login"
 }
 
 public struct APIResponse: Codable {
