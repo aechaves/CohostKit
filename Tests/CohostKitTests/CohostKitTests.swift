@@ -60,5 +60,27 @@ final class CryptoTests: XCTestCase {
 }
 
 
+@available(macOS 12.0, *)
+final class CKUserTests: XCTestCase {
+    // TODO: Mock APIs
+    
+    // WARNING: Only run this test against the release build (swift test -c release -Xswiftc -enable-testing)
+    // The CryptoSwift dependency is extremely slow in debug builds (and XCode does not let me run test in release mode)
+    func testLogin() async throws {
+        throw XCTSkip("Until APIs are mocked")
+        _ = try await CKUser.login(email: "example@example.com", password: "example@example.com")
+    }
+    
+    // WARNING: Only run this test against the release build (swift test -c release -Xswiftc -enable-testing)
+    // The CryptoSwift dependency is extremely slow in debug builds (and XCode does not let me run test in release mode)
+    func testIncorrectLogin() async throws {
+        throw XCTSkip("For now until errors are properly reported")
+        do {
+            _ = try await CKUser.login(email: "example@example.com", password: "example@example.com")
+            XCTFail("This call should throw an error.")
+        } catch {
+            // TODO: proper error checking
+            XCTAssertNotNil(error)
+        }
     }
 }
