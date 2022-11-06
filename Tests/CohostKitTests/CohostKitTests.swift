@@ -53,6 +53,9 @@ final class CKSaltTests: XCTestCase {
 
 final class CryptoTests: XCTestCase {
     func testClientHashGeneration() throws {
+        #if DEBUG
+        throw XCTSkip("Can't run this in debug mode because CryptoSwift is extremely slow (in that mode). Run in release mode with: swift test -c release -Xswiftc -enable-testing")
+        #endif
         let hash: String = try CryptoUtils.generateHash(password: "example@example.com", salt: "bqeZo1cm0IJOeXAAdOlbWA")
         
         XCTAssertEqual(hash, "2hyxlL2DJYPlHBpU3ZnSiBKbFQVS+kw7aARL4JNnXqD1MN37vg6TWQJghiIB0Mnw9P9CChN7dqb1spjyVkwPYiTaDQ6uKcyHwN1KdeXzICdvFdRGmF1oVd2UHEkzy1WyfEA8kwdHT2+Vn19rzoj3Lef0V1Rb4or2FV3B7QsBaw0=")
