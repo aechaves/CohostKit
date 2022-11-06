@@ -11,27 +11,6 @@ final class CohostKitTests: XCTestCase {
 }
 
 @available(macOS 12.0, *)
-final class CKAPITests: XCTestCase {
-    func testGetSalt() async throws {
-        // TODO: Mock APIs
-        let salt: String = try await getSalt(for: "example@example.com")
-        
-        XCTAssertEqual(salt, "bqeZo1cm0IJOeXAAdOlbWA")
-    }
-    
-    func testGetSaltBase64() async throws {
-        // TODO: Mock APIs
-        let salt: CKSalt = try await getSalt(for: "example@example.com")
-        let decoded = try XCTUnwrap(salt.decodedSalt)
-        
-        XCTAssert(decoded.count > 0)
-        
-        let comparison = String(base64Encoding: decoded, options: .omitPaddingCharacter)
-        XCTAssertEqual(salt.salt, comparison, "Obtained salt is not equal to reencoded salt in base64")
-    }
-}
-
-@available(macOS 12.0, *)
 final class CKSaltTests: XCTestCase {
     func testCKSaltFromJSON() throws {
         let model = try JSONDecoder().decode(CKSalt.self, from: Data("{\"salt\":\"bqeZo1cm0IJOeXA_dOlbWA\"}".utf8))
@@ -55,35 +34,10 @@ final class CryptoTests: XCTestCase {
     func testClientHashGeneration() throws {
         #if DEBUG
         throw XCTSkip("Can't run this in debug mode because CryptoSwift is extremely slow (in that mode). Run in release mode with: swift test -c release -Xswiftc -enable-testing")
-        #endif
+        #else
         let hash: String = try CryptoUtils.generateHash(password: "example@example.com", salt: "bqeZo1cm0IJOeXAAdOlbWA")
         
         XCTAssertEqual(hash, "2hyxlL2DJYPlHBpU3ZnSiBKbFQVS+kw7aARL4JNnXqD1MN37vg6TWQJghiIB0Mnw9P9CChN7dqb1spjyVkwPYiTaDQ6uKcyHwN1KdeXzICdvFdRGmF1oVd2UHEkzy1WyfEA8kwdHT2+Vn19rzoj3Lef0V1Rb4or2FV3B7QsBaw0=")
-    }
-}
-
-
-@available(macOS 12.0, *)
-final class CKUserTests: XCTestCase {
-    // TODO: Mock APIs
-    
-    // WARNING: Only run this test against the release build (swift test -c release -Xswiftc -enable-testing)
-    // The CryptoSwift dependency is extremely slow in debug builds (and XCode does not let me run test in release mode)
-    func testLogin() async throws {
-        throw XCTSkip("Until APIs are mocked")
-        _ = try await CKUser.login(email: "example@example.com", password: "example@example.com")
-    }
-    
-    // WARNING: Only run this test against the release build (swift test -c release -Xswiftc -enable-testing)
-    // The CryptoSwift dependency is extremely slow in debug builds (and XCode does not let me run test in release mode)
-    func testIncorrectLogin() async throws {
-        throw XCTSkip("For now until errors are properly reported")
-        do {
-            _ = try await CKUser.login(email: "example@example.com", password: "example@example.com")
-            XCTFail("This call should throw an error.")
-        } catch {
-            // TODO: proper error checking
-            XCTAssertNotNil(error)
-        }
+        #endif
     }
 }

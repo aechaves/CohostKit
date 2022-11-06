@@ -9,7 +9,8 @@ import Foundation
 
 // MARK: - Endpoints and structures
 
-let API_BASE = "https://cohost.org/api/v1"
+let HOST = "cohost.org"
+let API_BASE = "https://\(HOST)/api/v1"
 
 public enum CKEndpoint: String {
     case salt = "/login/salt"
