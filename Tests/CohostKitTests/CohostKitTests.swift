@@ -13,21 +13,44 @@ final class CohostKitTests: XCTestCase {
 @available(macOS 12.0, *)
 final class CKAPITests: XCTestCase {
     func testGetSalt() async throws {
-        let salt = try await getSalt(for: "example@example.com")
+        // TODO: Mock APIs
+        let salt: String = try await getSalt(for: "example@example.com")
         
-        XCTAssert(salt.count > 0)
+        XCTAssertEqual(salt, "bqeZo1cm0IJOeXAAdOlbWA")
     }
     
     func testGetSaltBase64() async throws {
-        let salt = try await getSalt(for: "example@example.com")
+        // TODO: Mock APIs
+        let salt: CKSalt = try await getSalt(for: "example@example.com")
+        let decoded = try XCTUnwrap(salt.decodedSalt)
         
-        let decodedSaltData = Data(base64Encoded: salt)
+        XCTAssert(decoded.count > 0)
         
-        XCTAssertNotNil(decodedSaltData)
+        let comparison = String(base64Encoding: decoded, options: .omitPaddingCharacter)
+        XCTAssertEqual(salt.salt, comparison, "Obtained salt is not equal to reencoded salt in base64")
+    }
+}
+
+@available(macOS 12.0, *)
+final class CKSaltTests: XCTestCase {
+    func testCKSaltFromJSON() throws {
+        let model = try JSONDecoder().decode(CKSalt.self, from: Data("{\"salt\":\"bqeZo1cm0IJOeXA_dOlbWA\"}".utf8))
+        // See: https://cohost.org/iliana/post/180187-eggbug-rs-v0-1-3-d
+        XCTAssertEqual(model.salt, "bqeZo1cm0IJOeXAAdOlbWA")
+    }
+    
+    func testCKSaltDecodes() throws {
+        let model = try JSONDecoder().decode(CKSalt.self, from: Data("{\"salt\":\"bqeZo1cm0IJOeXA_dOlbWA\"}".utf8))
         
-        let decodedSalt = String(data: decodedSaltData!, encoding: .ascii)
+        let decoded = try XCTUnwrap(model.decodedSalt)
         
-        XCTAssertNotNil(decodedSaltData)
-        XCTAssert(decodedSalt!.count > 0)
+        XCTAssert(decoded.count > 0)
+        
+        let comparison = String(base64Encoding: decoded, options: .omitPaddingCharacter)
+        XCTAssertEqual(model.salt, comparison, "Obtained salt is not equal to reencoded salt in base64")
+    }
+}
+
+
     }
 }

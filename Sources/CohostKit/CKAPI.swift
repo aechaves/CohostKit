@@ -57,6 +57,11 @@ public func get<Model: Codable>(_ endpoint: CKEndpoint, parameters: [String: Str
 }
 
 @available(macOS 12.0, *)
+public func getSalt(for email: String) async throws -> CKSalt {
+    return try await get(.salt, parameters: ["email": email])
+}
+
+@available(macOS 12.0, *)
 public func getSalt(for email: String) async throws -> String {
     let salt: CKSalt = try await get(.salt, parameters: ["email": email])
     return salt.salt
