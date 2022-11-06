@@ -15,7 +15,8 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.6.0")),
-        .package(url: "https://github.com/swift-extras/swift-extras-base64.git", branch: "0.7.0")
+        .package(url: "https://github.com/swift-extras/swift-extras-base64.git", branch: "0.7.0"),
+        .package(url: "https://github.com/AliSoftware/OHHTTPStubs.git", .upToNextMajor(from: "9.1.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -25,6 +26,6 @@ let package = Package(
             dependencies: ["CryptoSwift", .product(name: "ExtrasBase64", package: "swift-extras-base64")]),
         .testTarget(
             name: "CohostKitTests",
-            dependencies: ["CohostKit"]),
+            dependencies: ["CohostKit", "OHHTTPStubs", .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")]),
     ]
 )
