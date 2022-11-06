@@ -9,3 +9,12 @@ final class CohostKitTests: XCTestCase {
         XCTAssertEqual(CohostKit().text, "Hello, World!")
     }
 }
+
+@available(macOS 12.0, *)
+final class CKAPITests: XCTestCase {
+    func testGetSalt() async throws {
+        let salt = try await getSalt(for: "example@example.com")
+        
+        XCTAssert(salt.count > 0)
+    }
+}
