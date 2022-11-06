@@ -17,4 +17,17 @@ final class CKAPITests: XCTestCase {
         
         XCTAssert(salt.count > 0)
     }
+    
+    func testGetSaltBase64() async throws {
+        let salt = try await getSalt(for: "example@example.com")
+        
+        let decodedSaltData = Data(base64Encoded: salt)
+        
+        XCTAssertNotNil(decodedSaltData)
+        
+        let decodedSalt = String(data: decodedSaltData!, encoding: .ascii)
+        
+        XCTAssertNotNil(decodedSaltData)
+        XCTAssert(decodedSalt!.count > 0)
+    }
 }
