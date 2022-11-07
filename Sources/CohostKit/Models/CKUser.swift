@@ -8,7 +8,6 @@
 import Foundation
 import CryptoSwift
 
-@available(macOS 12.0, *)
 public struct CKUser {
     var id: Int64
     var email: String
@@ -33,7 +32,6 @@ public struct CKUser {
     }
 }
 
-@available(macOS 12.0, *)
 extension CKUser: Codable {
     enum CodingKeys: String, CodingKey {
         case id = "userId"

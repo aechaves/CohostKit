@@ -10,7 +10,6 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 @testable import CohostKit
 
-@available(macOS 12.0, *)
 final class CohostKitIntegrationTests: XCTestCase {
     func testGetSalt() async throws {
         let salt: String = try await getSalt(for: "example@example.com")

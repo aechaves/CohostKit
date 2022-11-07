@@ -24,7 +24,6 @@ public struct APIResponse: Codable {
 
 // MARK: - GET
 
-@available(macOS 12.0, *)
 public func get(_ endpoint: CKEndpoint, parameters: [String: String]? = nil) async throws -> (Data, HTTPURLResponse) {
     guard let url = URL(string: API_BASE + endpoint.rawValue) else { fatalError("Incorrect URL.") }
     
@@ -53,18 +52,15 @@ Parameters: \(String(describing: parameters))
     }
 }
 
-@available(macOS 12.0, *)
 public func get<Model: Codable>(_ endpoint: CKEndpoint, parameters: [String: String]? = nil) async throws -> Model {
     let (data, _) = try await get(endpoint, parameters: parameters)
     return try JSONDecoder().decode(Model.self, from: data)
 }
 
-@available(macOS 12.0, *)
 public func getSalt(for email: String) async throws -> CKSalt {
     return try await get(.salt, parameters: ["email": email])
 }
 
-@available(macOS 12.0, *)
 public func getSalt(for email: String) async throws -> String {
     let salt: CKSalt = try await get(.salt, parameters: ["email": email])
     return salt.salt
@@ -72,7 +68,6 @@ public func getSalt(for email: String) async throws -> String {
 
 // MARK: - POST
 
-@available(macOS 12.0, *)
 public func post(_ endpoint: CKEndpoint, body: [String: String]? = nil) async throws -> (Data, HTTPURLResponse) {
     guard let url = URL(string: API_BASE + endpoint.rawValue) else { fatalError("Incorrect URL.") }
     
@@ -102,7 +97,6 @@ Body: \(String(describing: body))
     }
 }
 
-@available(macOS 12.0, *)
 public func post<Model: Codable>(_ endpoint: CKEndpoint, body: [String: String]? = nil) async throws -> Model {
     let (data, _) = try await post(endpoint, body: body)
     return try JSONDecoder().decode(Model.self, from: data)

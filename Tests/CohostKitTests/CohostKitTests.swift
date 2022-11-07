@@ -3,7 +3,6 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 @testable import CohostKit
 
-@available(macOS 12.0, *)
 final class CKSaltTests: XCTestCase {
     func testCKSaltFromJSON() throws {
         let model = try JSONDecoder().decode(CKSalt.self, from: Data("{\"salt\":\"bqeZo1cm0IJOeXA_dOlbWA\"}".utf8))
@@ -35,7 +34,6 @@ final class CryptoTests: XCTestCase {
     }
 }
 
-@available(macOS 12.0, *)
 final class CKAPITests: XCTestCase {
     override func tearDown() {
         HTTPStubs.removeAllStubs()
@@ -63,8 +61,6 @@ final class CKAPITests: XCTestCase {
     }
 }
 
-
-@available(macOS 12.0, *)
 final class CKUserTests: XCTestCase {
     
     override func tearDown() {
